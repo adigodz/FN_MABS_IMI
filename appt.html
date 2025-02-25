@@ -254,7 +254,7 @@
 
         get_appt_api();
         function get_appt_api() {
-            fetch("http://localhost:3000/getAppt")
+            fetch("https://bn-mabs-imi.vercel.app/getAppt")
                 .then(response => response.json())
                 .then(data => {
                     data.sort((a, b) => a.appt_id - b.appt_id);
@@ -299,7 +299,7 @@
             document.getElementById('edit_type').value = "update";
             document.getElementById('txt_appt_id').style.display = "block";
             
-            fetch('http://localhost:3000/getAppt/' + id)
+            fetch('https://bn-mabs-imi.vercel.app/getAppt/' + id)
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
@@ -328,7 +328,7 @@
                 return;
             }
 
-            const apiUrl = (edit_type_f == "new") ? 'http://localhost:3000/addAppt' : "http://localhost:3000/editAppt";
+            const apiUrl = (edit_type_f == "new") ? 'https://bn-mabs-imi.vercel.app/addAppt' : "https://bn-mabs-imi.vercel.app/editAppt";
             
             const data = {
                 appt_id: appt_id_f,
@@ -358,7 +358,7 @@
 
         function delete_appt(id) {
             if (confirm("คุณต้องการลบข้อมูลการนัดหมายนี้ใช่หรือไม่?")) {
-                fetch('http://localhost:3000/deleteAppt/' + id, { 
+                fetch('https://bn-mabs-imi.vercel.app/deleteAppt/' + id, { 
                     method: 'DELETE' 
                 })
             .then(response => {
