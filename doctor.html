@@ -318,7 +318,7 @@
             document.getElementById('edit_type').value = "update";
             document.getElementById('form_docter_id').style.display = "block";
             
-            fetch('https://bn-mabs-imi.vercel.app/getDoctors/' + id)
+            fetch('https://bn-mabs-imi.vercel.app/getDoctor/' + id)
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
