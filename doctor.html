@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medical Appointment Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f7;
+            color: #2c3e50;
+            font-family: 'Prompt', sans-serif;
+        }
+        
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .page-header {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            background-color: #2196f3;
+            border: none;
+            padding: 8px 20px;
+            margin: 0 5px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 400;
+        }
+
+        .btn-primary:hover {
+            background-color: #1976d2;
+        }
+
+        .btn-danger {
+            margin-left: 10px;
+            padding: 8px 20px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 400;
+        }
+
+        .table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead {
+            background-color: #e3f2fd;
+        }
+
+        .table th {
+            color: #1976d2;
+            font-weight: 500;
+            border-bottom: 2px solid #bbdefb;
+            text-align: center !important;
+            vertical-align: middle;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.1em;
+            padding: 15px !important;
+        }
+
+        .table td {
+            vertical-align: middle;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 1em;
+            padding: 12px !important;
+            text-align: center;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .modal-header {
+            background-color: #e3f2fd;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-title {
+            font-weight: 500;
+            color: #1976d2;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .form-floating label {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 300;
+        }
+
+        .form-control {
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .form-control:focus {
+            border-color: #2196f3;
+            box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .system-title {
+            color: #1976d2;
+            font-weight: 600;
+            font-size: 2em;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .btn-sm {
+            font-size: 0.9em;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            padding: 15px 25px;
+        }
+
+        .modal-footer .btn {
+            padding: 8px 20px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .system-title {
+                font-size: 1.5em;
+                text-align: center;
+            }
+
+            .btn-primary {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .table td, .table th {
+                font-size: 0.9em;
+                padding: 8px !important;
+            }
+
+            .btn-action-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn-sm {
+                width: 100%;
+            }
+
+            .modal-dialog {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header text-center text-md-start">
+            <div class="row align-items-center">
+                <div class="col-md-10 col-12">
+                    <h1 class="system-title">ข้อมูลแพทย์</h1>
+                </div>
+                <div class="col-md-2 col-12 text-md-end text-center mt-3 mt-md-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#from_doctor_Modal" onclick="click_momal_add()">
+                        <i class="fas fa-user-md"></i> เพิ่มแพทย์
+                    </button>
+                    <button onclick="goToPage()" class="btn btn-success w-100 mt-2 rounded-pill">
+                        <i class="fas fa-arrow-right"></i> ไปที่หน้าถัดไป
+                    </button>
+                </div>                
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="table_doctor_list">
+                <thead>
+                    <tr>
+                        <th scope="col">รหัส</th>
+                        <th scope="col">ชื่อ</th>
+                        <th scope="col">แผนก</th>
+                        <th scope="col">เบอร์โทร</th>
+                        <th scope="col">การจัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade modal-lg" id="from_doctor_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="FormModalLabel">เพิ่มข้อมูลแพทย์</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="edit_type">
+                        <div class="form-floating mb-3" id="form_docter_id">
+                            <input type="text" class="form-control" id="txt_docter_id" readonly>
+                            <label for="txt_docter_id">รหัสประจำตัว</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txt_d_name" required>
+                            <label for="txt_d_name">ชื่อ</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txt_department" required>
+                            <label for="txt_department">แผนก</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txt_phone" required>
+                            <label for="txt_phone">เบอร์โทร</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="get_doctor_api();">ปิด</button>
+                    <button type="button" class="btn btn-primary" onclick="save_doctor();">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = Array.from(tooltipTriggerList).map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        function goToPage() {
+        window.location.href = "appt.html"; // เปลี่ยนหน้าเมื่อกดปุ่ม
+        }
+
+        get_doctor_api();
+        function get_doctor_api() {
+            fetch("http://localhost:3000/getDoctors")
+                .then(response => response.json())
+                .then(data => {
+                    data.sort((a, b) => a.doctor_id - b.doctor_id);
+                    const tableRef = document.querySelector("#table_doctor_list tbody");
+                    tableRef.innerHTML = "";
+
+                    data.forEach(element => {
+                        let row = document.createElement("tr");
+                        row.setAttribute("data-id", element.doctor_id);
+                        row.innerHTML = `
+                            <td>${element.doctor_id}</td>
+                            <td>${element.d_name}</td>
+                            <td>${element.department}</td>
+                            <td>${element.phone}</td>
+                            <td class="btn-action-group">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" 
+                                    data-bs-target="#from_doctor_Modal" onclick="click_momal_edit(${element.doctor_id})">
+                                    <i class="fas fa-edit"></i> แก้ไข
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="delete_doctor(${element.doctor_id})">
+                                    <i class="fas fa-trash"></i> ลบ
+                                </button>
+                            </td>`;
+                        tableRef.appendChild(row);
+                    });
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        function click_momal_add() {
+            document.getElementById('FormModalLabel').innerHTML = "เพิ่มข้อมูลแพทย์";
+            document.getElementById('edit_type').value = "new";
+            document.getElementById('form_docter_id').style.display = "none";
+            document.getElementById('txt_d_name').value = "";
+            document.getElementById('txt_department').value = "";
+            document.getElementById('txt_phone').value = "";
+        }
+
+        function click_momal_edit(id) {
+            document.getElementById('FormModalLabel').innerHTML = "แก้ไขข้อมูลแพทย์";
+            document.getElementById('edit_type').value = "update";
+            document.getElementById('form_docter_id').style.display = "block";
+            
+            fetch('http://localhost:3000/getDoctor/' + id)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    data.forEach(element => {
+                        document.getElementById('txt_docter_id').value = element.doctor_id;
+                        document.getElementById('txt_d_name').value = element.d_name;
+                        document.getElementById('txt_department').value = element.department;
+                        document.getElementById('txt_phone').value = element.phone;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function save_doctor() {
+            let edit_type_f = document.getElementById('edit_type').value;
+            let doctor_ID_f = document.getElementById('txt_docter_id').value;
+            let doctor_name_f = document.getElementById('txt_d_name').value;
+            let doctor_department_f = document.getElementById('txt_department').value;
+            let doctor_phone_f = document.getElementById('txt_phone').value;
+
+            if (doctor_name_f.trim() == "" || doctor_department_f.trim() == "" || doctor_phone_f.trim() == "") {
+                alert("กรุณากรอกข้อมูลให้ครบ");
+                return;
+            }
+
+            const apiUrl = (edit_type_f == "new") ? 'http://localhost:3000/addDoctor' : "http://localhost:3000/editDoctor";
+            
+            const data = {
+                doctor_id: doctor_ID_f,
+                d_name: doctor_name_f,
+                department: doctor_department_f,
+                phone: doctor_phone_f,
+            };
+
+            fetch(apiUrl, {
+                method: (edit_type_f == "new") ? 'POST' : 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(responseData => {
+                alert("บันทึกข้อมูลเรียบร้อย");
+                get_doctor_api();
+                document.querySelector("#from_doctor_Modal .btn-close").click();
+            })
+            .catch(error => {
+                alert('Error:', error);
+            });
+        }
+
+        function delete_doctor(id) {
+            if (confirm("คุณต้องการลบข้อมูลแพทย์นี้ใช่หรือไม่?")) {
+                fetch('http://localhost:3000/deleteDoctor/' + id, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("ลบข้อมูลเรียบร้อย");
+                            get_doctor_api();
+                        } else {
+                            alert("เกิดข้อผิดพลาดในการลบข้อมูล");
+                        }
+                    })
+                    .catch(error => {
+                        alert("เกิดข้อผิดพลาดในการลบข้อมูล");
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>
