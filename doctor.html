@@ -274,7 +274,7 @@
 
         get_doctor_api();
         function get_doctor_api() {
-            fetch("http://localhost:3000/getDoctors")
+            fetch("https://bn-mabs-imi.vercel.app/getDoctors")
                 .then(response => response.json())
                 .then(data => {
                     data.sort((a, b) => a.doctor_id - b.doctor_id);
@@ -318,7 +318,7 @@
             document.getElementById('edit_type').value = "update";
             document.getElementById('form_docter_id').style.display = "block";
             
-            fetch('http://localhost:3000/getDoctor/' + id)
+            fetch('https://bn-mabs-imi.vercel.app/getDoctors/' + id)
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
@@ -346,7 +346,7 @@
                 return;
             }
 
-            const apiUrl = (edit_type_f == "new") ? 'http://localhost:3000/addDoctor' : "http://localhost:3000/editDoctor";
+            const apiUrl = (edit_type_f == "new") ? 'https://bn-mabs-imi.vercel.app/addDoctor' : "https://bn-mabs-imi.vercel.app/editDoctor";
             
             const data = {
                 doctor_id: doctor_ID_f,
@@ -376,7 +376,7 @@
 
         function delete_doctor(id) {
             if (confirm("คุณต้องการลบข้อมูลแพทย์นี้ใช่หรือไม่?")) {
-                fetch('http://localhost:3000/deleteDoctor/' + id, { method: 'DELETE' })
+                fetch('https://bn-mabs-imi.vercel.app/deleteDoctor/' + id, { method: 'DELETE' })
                     .then(response => {
                         if (response.ok) {
                             alert("ลบข้อมูลเรียบร้อย");
